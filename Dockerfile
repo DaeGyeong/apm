@@ -32,7 +32,6 @@ RUN make; make install
 
 RUN echo "alias apachectl='/apps/apache2/bin/apachectl'" >> ~/.bashrc
 RUN source ~/.bashrc
-#EXPOSE 80
 
 # MySQL
 RUN mkdir /apps/data
@@ -112,7 +111,6 @@ WORKDIR /apps/web_root/Django
 
 # httpd.conf 파일 수정 합시다
 RUN ip=`hostname -I`
-#RUN sed -i "s/#ServerName www.example.com/ServerName `echo $ip`/g" /apps/apache2/conf/httpd.conf
 RUN sed -i "s/#ServerName www.example.com/ServerName `hostname -I|cut -f 1 -d ' '`/g" /apps/apache2/conf/httpd.conf
 
 
@@ -129,7 +127,6 @@ RUN echo "</Files>" >> /apps/apache2/conf/httpd.conf
 RUN echo "</Directory>" >> /apps/apache2/conf/httpd.conf
 
 #DB 생성해봅시다
-
 RUN useradd -M mysql -u 27 >& /dev/null
 RUN chown -R root:mysql /apps/mysql
 WORKDIR /apps/mysql
@@ -231,7 +228,7 @@ RUN echo "/apps/mysql/bin/mysql -u root -proot -e 'GRANT ALL PRIVILEGES ON *.* T
 RUN echo "/apps/Python3/bin/python3 manage.py makemigrations" >> 1
 RUN echo "/apps/Python3/bin/python3 manage.py migrate" >> 1
 
-RUN chmod +x 1
+#RUN chmod +x 1
 #RUN ./1
 
 EXPOSE 80
