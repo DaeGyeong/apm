@@ -163,7 +163,7 @@ RUN sed -i "s/13306/3306/g" /apps/web_root/Django/learning_log/settings.py
 
 RUN echo "/apps/mysql/support-files/mysql.server restart" >> 1
 RUN echo "/apps/mysql/bin/mysql -u root -proot -e 'set password=password('root');'" >> 1
-RUN echo "/apps/mysql/bin/mysql -u root -proot -e 'CREATE USER 'root'@'%' IDENTIFIED BY 'root' PASSWORD EXPIRE NEVER;'" >> 1
+RUN echo "/apps/mysql/bin/mysql -u root -proot -e 'set password for 'root'@'%'=password('root');'" >> 1
 RUN echo "/apps/mysql/bin/mysql -u root -proot -e 'GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; flush privileges;'" >> 1
 RUN echo "/apps/Python3/bin/python3 manage.py makemigrations" >> 1
 RUN echo "/apps/Python3/bin/python3 manage.py migrate" >> 1
@@ -171,7 +171,7 @@ RUN echo "/apps/Python3/bin/python3 manage.py migrate" >> 1
 #RUN chmod +x 1
 #RUN ./1
 
-#EXPOSE 80
+EXPOSE 80
 #EXPOSE 3306
 
 
