@@ -1,66 +1,6 @@
-FROM centos:latest
+#FROM centos:latest
+FROM sub951/install:latest
 MAINTAINER dg kwon <dg.kwon@navercorp.com>
-
-RUN yum groupinstall -y 'Development Tools' &&\
-    yum install -y wget net-tools gcc* libtool* expat-devel
-
-# 아파치
-RUN mkdir -p /apps/web
-WORKDIR /apps/web
-
-RUN wget http://mirror.navercorp.com/apache/httpd/httpd-2.4.29.tar.gz
-RUN wget http://mirror.navercorp.com/apache/apr/apr-1.6.3.tar.gz
-RUN wget http://mirror.navercorp.com/apache/apr/apr-util-1.6.1.tar.gz
-RUN wget http://downloads.sourceforge.net/project/pcre/pcre/8.41/pcre-8.41.tar.gz
-
-RUN tar xzf httpd-2.4.29.tar.gz
-RUN tar xzf apr-1.6.3.tar.gz
-RUN tar xzf apr-util-1.6.1.tar.gz
-RUN tar xzf pcre-8.41.tar.gz
-
-WORKDIR /apps/web/pcre-8.41
-RUN ./configure
-RUN make && make install
-
-WORKDIR /apps/web
-RUN mv apr-1.6.3 httpd-2.4.29/srclib/apr
-RUN mv apr-util-1.6.1 httpd-2.4.29/srclib/apr-util
-
-WORKDIR /apps/web/httpd-2.4.29
-RUN ./configure --prefix=/apps/apache2
-RUN make; make install
-
-RUN echo "alias apachectl='/apps/apache2/bin/apachectl'" >> ~/.bashrc
-RUN source ~/.bashrc
-
-# MySQL
-RUN mkdir /apps/data
-WORKDIR /apps/data
-RUN wget http://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.gz
-RUN wget mirror.koreaidc.com/mysql/mysql-5.7.9.tar.gz
-RUN tar xzf boost_1_59_0.tar.gz
-RUN tar xzf mysql-5.7.9.tar.gz
-
-WORKDIR /apps/data/mysql-5.7.9
-RUN yum -y install ncurses ncurses-devel cmake
-RUN cmake \
-  -DCMAKE_INSTALL_PREFIX=/apps/mysql \
-  -DWITH_EXTRA_CHARSETS=all \
-  -DMYSQL_DATADIR=/apps/mysql_data \
-  -DENABLED_LOCAL_INFILE=1 \
-  -DDOWNLOAD_BOOST=1 \
-  -DWITH_BOOST=../boost_1_59_0 \
-  -DWITH_INNOBASE_STORAGE_ENGINE=1 \
-  -DENABLED_LOCAL_INFILE=1 \
-  -DMYSQL_UNIX_ADDR=/tmp/mysql.sock \
-  -DSYSCONFDIR=/etc \
-  -DDEFAULT_CHARSET=utf8 \
-  -DDEFAULT_COLLATION=utf8_general_ci \
-  -DWITH_EXTRA_CHARSETS=all
-
-RUN make; make install
-
-#RUN apachectl start
 
 # Python & django
 WORKDIR /apps/data
