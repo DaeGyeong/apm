@@ -231,5 +231,13 @@ RUN echo "/apps/Python3/bin/python3 manage.py migrate" >> 1
 #RUN chmod +x 1
 #RUN ./1
 
-EXPOSE 80
-EXPOSE 3306
+#EXPOSE 80
+#EXPOSE 3306
+
+
+echo "alias apachectl='/home1/irteam/apps/apache2/bin/apachectl'" >> ~/.bashrc
+echo "alias mysql_service='/home1/irteam/apps/mysql/support-files/mysql.server'" >> ~/.bashrc
+echo "alias mysql='/home1/irteam/apps/mysql/bin/mysql'" >> ~/.bashrc
+
+
+
