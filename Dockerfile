@@ -15,9 +15,8 @@ WORKDIR /apps/data/Python-3.6.4
 RUN ./configure --prefix=/apps/Python3 CFLAGS=-fPIC --enable-shared --with-threads 
 #RUN ./configure --prefix=/apps/Python3 CFLAGS=-fPIC --enable-shared 
 RUN echo "export LD_RUN_PATH=/usr/lib">>~/.bashrc
-RUN source ~/.bashrc
-RUN make
-RUN make install
+
+RUN make && make install
 RUN ln -s /apps/Python3/lib/libpython3.6m.so.1.0 /usr/lib
 RUN rm -rf /apps/Python3
 RUN make clean
@@ -36,7 +35,6 @@ RUN echo "#python3">>~/.bashrc
 RUN echo "alias python='/apps/Python3/bin/python3'">>~/.bashrc
 RUN echo "alias pip='/apps/Python3/bin/pip3'">>~/.bashrc
 RUN echo "alias django='/apps/Python3/bin/django-admin.py'">>~/.bashrc
-RUN source ~/.bashrc
 
 RUN /apps/Python3/bin/pip3 install django==1.8
 RUN /apps/Python3/bin/pip3 install django-bootstrap3
