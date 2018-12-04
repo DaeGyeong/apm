@@ -1,6 +1,5 @@
-#FROM centos:latest
 FROM sub951/install:latest
-MAINTAINER dg kwon <dg.kwon@navercorp.com>
+MAINTAINER dg kwon <sub951@naver.com>
 
 # Python & django
 WORKDIR /apps/data
@@ -49,7 +48,7 @@ WORKDIR /apps/web_root
 RUN git clone https://github.com/DaeGyeong/Django.git
 WORKDIR /apps/web_root/Django
 
-# httpd.conf 파일 수정 합시다
+# httpd.conf 
 RUN ip=`hostname -I`
 RUN sed -i "s/#ServerName www.example.com/ServerName `hostname -I|cut -f 1 -d ' '`/g" /apps/apache2/conf/httpd.conf
 
@@ -152,9 +151,8 @@ RUN /apps/mysql/support-files/mysql.server start &&\
 
 
 RUN sed -i 's/skip-grant-tables/#skip-grant-tables/g' /etc/my.cnf
-RUN ./support-files/mysql.server restart
-#RUN ./support-files/mysql.server restart &&\
-#./bin/mysql -u root -pMyNewPass -e "use mysql; set password=password('root');"
+CMD ./support-files/mysql.server restart
+#RUN ./bin/mysql -u root -pMyNewPass -e "use mysql; set password=password('root');"
 
 
 WORKDIR /apps/web_root/Django
@@ -168,8 +166,8 @@ RUN echo "/apps/mysql/bin/mysql -u root -proot -e 'GRANT ALL PRIVILEGES ON *.* T
 RUN echo "/apps/Python3/bin/python3 manage.py makemigrations" >> 1
 RUN echo "/apps/Python3/bin/python3 manage.py migrate" >> 1
 
-#RUN chmod +x 1
-#RUN ./1
+RUN chmod +x 1
+CMD ./1
 
 EXPOSE 80
 #EXPOSE 3306
